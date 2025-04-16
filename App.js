@@ -1,9 +1,10 @@
 import { React } from "react";
 import { View } from "react-native";
-import { s } from "./App.style";
+import { CIRCLE_RADIUS, s } from "./App.style";
 import Animated, {
   useAnimatedStyle,
-  useSharedValue
+  useSharedValue,
+  withSpring
 } from "react-native-reanimated";
 import {
   Gesture,
@@ -21,7 +22,13 @@ const App = () => {
       squareAnimTranslateY.value += event.changeY;
     })
     .onFinalize(() => {
-      console.log("onEnd");
+      const distanceFromCenter = Math.sqrt(
+        squareAnimTranslateX.value ** 2 + squareAnimTranslateY.value ** 2
+      );
+      if (distanceFromCenter < CIRCLE_RADIUS) {
+        squareAnimTranslateX.value = withSpring(0);
+        squareAnimTranslateY.value = withSpring(0);
+      }
     });
 
   const squareAnimStyle = useAnimatedStyle(() => {
@@ -36,9 +43,11 @@ const App = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={s.root}>
-        <GestureDetector gesture={gestureHandler}>
-          <Animated.View style={[s.square, squareAnimStyle]} />
-        </GestureDetector>
+        <View style={s.circle}>
+          <GestureDetector gesture={gestureHandler}>
+            <Animated.View style={[s.square, squareAnimStyle]} />
+          </GestureDetector>
+        </View>
       </View>
     </GestureHandlerRootView>
   );
