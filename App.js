@@ -1,20 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { React, useEffect, useState } from "react";
+import { View } from "react-native";
+import { s } from "./App.style";
 
-export default function App() {
+const App = () => {
+  const [x, setX] = useState(0);
+
+  useEffect(() => {
+    setInterval(() => {
+      setX(x => x + 1);
+    }, 25);
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={s.root}>
+      <View style={[s.square, { left: x }]} />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
