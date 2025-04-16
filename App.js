@@ -1,36 +1,46 @@
-import { React, useEffect } from "react";
+import { React } from "react";
 import { View } from "react-native";
 import { s } from "./App.style";
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue
+} from "react-native-reanimated";
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView
+} from "react-native-gesture-handler";
 
 const App = () => {
-  const squareAnimX = useSharedValue(0);
-  const squareAnimY = useSharedValue(0);
+  const squareAnimTranslateX = useSharedValue(0);
+  const squareAnimTranslateY = useSharedValue(0);
 
-  useEffect(() => {
-    squareAnimX.value = withTiming(300, { duration: 3000 }, () => {
-      squareAnimY.value = withSpring(300, { mass: 10 });
-      squareAnimX.value = withSpring(0, { duration: 3000 });
+  const gestureHandler = Gesture.Pan()
+    .onChange((event) => {
+      squareAnimTranslateX.value += event.changeX;
+      squareAnimTranslateY.value += event.changeY;
+    })
+    .onFinalize(() => {
+      console.log("onEnd");
     });
-  }, []);
 
   const squareAnimStyle = useAnimatedStyle(() => {
     return {
       transform: [
-        {
-          translateX: squareAnimX.value,
-        },
-        {
-          translateY: squareAnimY.value
-        }
+        { translateX: squareAnimTranslateX.value },
+        { translateY: squareAnimTranslateY.value }
       ],
     };
   });
 
   return (
-    <View style={s.root}>
-      <Animated.View style={[s.square, squareAnimStyle]} />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={s.root}>
+        <GestureDetector gesture={gestureHandler}>
+          <Animated.View style={[s.square, squareAnimStyle]} />
+        </GestureDetector>
+      </View>
+    </GestureHandlerRootView>
   );
 }
 
