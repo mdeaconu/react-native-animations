@@ -5,6 +5,11 @@ export const IMAGE_SIZE = {
   MIN: 100
 };
 
+export const TITLE_FONT_SIZE = {
+  MAX: 30,
+  MIN: 0.41
+};
+
 export const s = StyleSheet.create({
   image: {
     width: "100%",
@@ -21,7 +26,7 @@ export const s = StyleSheet.create({
   },
   title: {
     color: "white",
-    fontSize: 30,
+    fontSize: TITLE_FONT_SIZE.MIN,
     textAlign: "center",
   },
   subtitle: {

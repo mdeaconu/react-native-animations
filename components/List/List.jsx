@@ -19,9 +19,11 @@ const List = () => {
 
   return (
     <Animated.ScrollView
+      decelerationRate={"fast"}
       contentContainerStyle={{ height: IMAGES.length * IMAGE_SIZE.MAX + (SCREEN_H - IMAGE_SIZE.MAX) }}
       scrollEventThrottle={16}
       onScroll={scrollHandler}
+      snapToInterval={IMAGE_SIZE.MAX}
     >
       {IMAGES.map((image, i) => (
         <ListItem

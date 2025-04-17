@@ -1,5 +1,5 @@
 import React from "react";
-import { IMAGE_SIZE, s } from "./ListItem.style";
+import { IMAGE_SIZE, s, TITLE_FONT_SIZE } from "./ListItem.style";
 import Animated, {
   Extrapolation,
   interpolate, useAnimatedStyle
@@ -15,8 +15,30 @@ const ListItem = ({ image, scrollY, index }) => {
       [IMAGE_SIZE.MAX, IMAGE_SIZE.MIN],
       Extrapolation.CLAMP
     );
+
     return {
       height
+    };
+  });
+
+  const textAnimatedStyle = useAnimatedStyle(() => {
+    const fontSize = interpolate(
+      scrollY.value,
+      [index * IMAGE_SIZE.MAX, index * IMAGE_SIZE.MAX - IMAGE_SIZE.MAX],
+      [TITLE_FONT_SIZE.MAX, TITLE_FONT_SIZE.MIN],
+      Extrapolation.CLAMP
+    );
+
+    const opacity = interpolate(
+      scrollY.value,
+      [index * IMAGE_SIZE.MAX, IMAGE_SIZE.MAX * (index - 0.5)],
+      [1, 0],
+      Extrapolation.CLAMP
+    );
+
+    return {
+      fontSize,
+      opacity
     };
   });
 
@@ -28,7 +50,7 @@ const ListItem = ({ image, scrollY, index }) => {
       />
       <View style={s.textContainer}>
         <Text style={s.subtitle}>{image.subtitle}</Text>
-        <Text style={s.title}>{image.title}</Text>
+        <Animated.Text style={[s.title, textAnimatedStyle]}>{image.title}</Animated.Text>
       </View>
     </TouchableOpacity>
   );
