@@ -5,6 +5,7 @@ import Animated, {
   interpolate, useAnimatedStyle
 } from "react-native-reanimated";
 import PropTypes from "prop-types";
+import { Text, TouchableOpacity, View } from "react-native";
 
 const ListItem = ({ image, scrollY, index }) => {
   const imageAnimatedStyle = useAnimatedStyle(() => {
@@ -19,10 +20,18 @@ const ListItem = ({ image, scrollY, index }) => {
     };
   });
 
-  return <Animated.Image
-    source={image.picture}
-    style={[s.image, imageAnimatedStyle]}
-  />
+  return (
+    <TouchableOpacity>
+      <Animated.Image
+        source={image.picture}
+        style={[s.image, imageAnimatedStyle]}
+      />
+      <View style={s.textContainer}>
+        <Text style={s.subtitle}>{image.subtitle}</Text>
+        <Text style={s.title}>{image.title}</Text>
+      </View>
+    </TouchableOpacity>
+  );
 };
 
 ListItem.propTypes = {
