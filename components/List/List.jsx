@@ -1,5 +1,4 @@
 import React from "react";
-import { s } from "./List.style";
 import { IMAGES } from "../../constants";
 import ListItem from "../ListItem/ListItem";
 import Animated, {
